@@ -1,7 +1,33 @@
 package guru.springframework.spring5recipeapp.service.impl;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import guru.springframework.spring5recipeapp.domain.Recipe;
+import guru.springframework.spring5recipeapp.respository.RecipeRepository;
+import guru.springframework.spring5recipeapp.service.RecipeService;
+
+import org.springframework.stereotype.Service;
+
 /**
  * Created by Viktoriya on 24-Apr-20
  */
-public class RecipeService {
+@Service
+public class RecipeServiceImpl implements RecipeService {
+
+	private final RecipeRepository recipeRepository;
+
+	public RecipeServiceImpl(RecipeRepository recipeRepository) {
+		this.recipeRepository = recipeRepository;
+	}
+
+	@Override
+	public Set<Recipe> getRecipes() {
+		Set<Recipe> recipes = new HashSet<>();
+		recipeRepository.findAll().iterator().forEachRemaining(recipes::add);
+		return recipes;
+	}
 }
