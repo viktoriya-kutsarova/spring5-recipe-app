@@ -9,12 +9,14 @@ import java.util.Set;
 import guru.springframework.spring5recipeapp.domain.Recipe;
 import guru.springframework.spring5recipeapp.respository.RecipeRepository;
 import guru.springframework.spring5recipeapp.service.RecipeService;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
 
 /**
  * Created by Viktoriya on 24-Apr-20
  */
+@Slf4j
 @Service
 public class RecipeServiceImpl implements RecipeService {
 
@@ -26,6 +28,8 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Override
 	public Set<Recipe> getRecipes() {
+		log.debug("I'm in the service");
+
 		Set<Recipe> recipes = new HashSet<>();
 		recipeRepository.findAll().iterator().forEachRemaining(recipes::add);
 		return recipes;

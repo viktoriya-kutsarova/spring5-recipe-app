@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import guru.springframework.spring5recipeapp.domain.Category;
 import guru.springframework.spring5recipeapp.domain.Difficulty;
 import guru.springframework.spring5recipeapp.domain.Ingredient;
@@ -14,6 +16,7 @@ import guru.springframework.spring5recipeapp.domain.UnitOfMeasure;
 import guru.springframework.spring5recipeapp.respository.CategoryRepository;
 import guru.springframework.spring5recipeapp.respository.RecipeRepository;
 import guru.springframework.spring5recipeapp.respository.UnitOfMeasureRepository;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -22,6 +25,7 @@ import org.springframework.stereotype.Component;
 /**
  * Created by Viktoriya on 24-Apr-20
  */
+@Slf4j
 @Component
 public class RecipeLoader implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -38,7 +42,9 @@ public class RecipeLoader implements ApplicationListener<ContextRefreshedEvent> 
 	}
 
 	@Override
+	@Transactional
 	public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+		log.debug("Loading bootstrap data");
 		recipeRepository.saveAll(getRecipes());
 	}
 
@@ -166,6 +172,8 @@ public class RecipeLoader implements ApplicationListener<ContextRefreshedEvent> 
 
 		recipes.add(guacamole);
 
+		log.debug("Created guacamole recipe");
+
 		Recipe spicyGrilledChicken = new Recipe();
 		spicyGrilledChicken.setDescription("Spicy Grilled Chicken Tacos");
 		spicyGrilledChicken.setPrepTime(20);
@@ -232,6 +240,9 @@ public class RecipeLoader implements ApplicationListener<ContextRefreshedEvent> 
 		spicyGrilledChicken.addIngredient(new Ingredient(BigDecimal.ONE, "lime, cut into wedges"));
 
 		recipes.add(spicyGrilledChicken);
+
+		log.debug("Created spicy grilled chicken recipe");
+
 
 		return recipes;
 	}
