@@ -28,8 +28,7 @@ public class IndexController {
 		log.debug("Entering index controller");
 
 		Set<Recipe> recipes = recipeService.getRecipes();
-		System.out.println(recipes);
 		model.addAttribute("recipes", recipes);
-		return "recipes/index";
+		return "index";
 	}
 }
