@@ -1,11 +1,15 @@
 package guru.springframework.spring5recipeapp.controller;
 
+import guru.springframework.spring5recipeapp.command.RecipeCommand;
 import guru.springframework.spring5recipeapp.service.RecipeService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * Created by Viktoriya on 06-Jun-20
@@ -24,5 +28,19 @@ public class RecipeController {
 	public String showById(@PathVariable String id, Model model) {
 		model.addAttribute("recipe", recipeService.findById(Long.valueOf(id)));
 		return "recipe/show";
+	}
+
+	@RequestMapping("new")
+	public String newRecipe(Model model) {
+		model.addAttribute("recipe", new RecipeCommand());
+
+		return "recipe/recipeform";
+	}
+
+	@PostMapping
+	public String saveOrUpdate(@ModelAttribute RecipeCommand command) {
+		RecipeCommand savedCommand = recipeService.save(command);
+
+		return "redirect:/recipe/" + savedCommand.getId();
 	}
 }
