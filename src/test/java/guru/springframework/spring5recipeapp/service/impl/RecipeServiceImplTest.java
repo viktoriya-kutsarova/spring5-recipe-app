@@ -4,6 +4,9 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import guru.springframework.spring5recipeapp.command.RecipeCommand;
+import guru.springframework.spring5recipeapp.converter.RecipeCommandToRecipe;
+import guru.springframework.spring5recipeapp.converter.RecipeToRecipeCommand;
 import guru.springframework.spring5recipeapp.domain.Recipe;
 import guru.springframework.spring5recipeapp.respository.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -25,11 +29,17 @@ class RecipeServiceImplTest {
 	@Mock
 	RecipeRepository recipeRepository;
 
+	@Mock
+	RecipeToRecipeCommand recipeToRecipeCommand;
+
+	@Mock
+	RecipeCommandToRecipe recipeCommandToRecipe;
+
 	@BeforeEach
 	void setUp() {
 		MockitoAnnotations.initMocks(this);
 
-		recipeService = new RecipeServiceImpl(recipeRepository);
+		recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
 	}
 
 	@Test
@@ -57,10 +67,34 @@ class RecipeServiceImplTest {
 
 		when(recipeRepository.findAll()).thenReturn(recipesData);
 
-		Set<Recipe> recipes = recipeService.getRecipes();
+		Set<Recipe> recipes = recipeService.getAll();
 
 		assertEquals(recipes.size(), 1);
 		// find all was called only ones
 		verify(recipeRepository, times(1)).findAll();
+	}
+
+	@Test
+	void saveRecipe() {
+		//given
+		RecipeCommand recipeCommand = new RecipeCommand();
+		recipeCommand.setId(1L);
+		recipeCommand.setDescription("descr");
+		recipeCommand.setPrepTime(10);
+
+		Recipe recipe = new Recipe();
+		recipe.setId(1L);
+		recipe.setDescription("descr");
+		recipe.setPrepTime(10);
+
+		//when
+		when(recipeCommandToRecipe.convert(recipeCommand)).thenReturn(recipe);
+		when(recipeRepository.save(any())).thenReturn(recipe);
+		when(recipeToRecipeCommand.convert(recipe)).thenReturn(recipeCommand);
+
+		//then
+		RecipeCommand savedRecipe = recipeService.save(recipeCommand);
+		assertNotNull(savedRecipe);
+		assertEquals(1l, savedRecipe.getId());
 	}
 }
