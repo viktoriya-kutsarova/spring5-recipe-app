@@ -52,7 +52,9 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
 					ing -> recipe.getIngredients().add(ingredientsCommandToIngredients.convert(ing)));
 		}
 
-		recipe.setNotes(notesCommandToNotes.convert(recipeCommand.getNotes()));
+		if (recipeCommand.getNotes() != null) {
+			recipe.setNotes(notesCommandToNotes.convert(recipeCommand.getNotes()));
+		}
 		return recipe;
 	}
 }
