@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * Created by Viktoriya on 06-Jun-20
@@ -24,7 +23,7 @@ public class RecipeController {
 		this.recipeService = recipeService;
 	}
 
-	@RequestMapping("/{id}")
+	@RequestMapping("{id}")
 	public String showById(@PathVariable String id, Model model) {
 		model.addAttribute("recipe", recipeService.findById(Long.valueOf(id)));
 		return "recipe/show";
@@ -42,5 +41,11 @@ public class RecipeController {
 		RecipeCommand savedCommand = recipeService.save(command);
 
 		return "redirect:/recipe/" + savedCommand.getId();
+	}
+
+	@RequestMapping("{id}/update")
+	public String updateRecipe(@PathVariable String id, Model model) {
+		model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(id)));
+		return "recipe/recipeform";
 	}
 }

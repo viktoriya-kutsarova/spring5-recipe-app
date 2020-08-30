@@ -13,5 +13,7 @@ public interface CrudService<T, TCommand, ID> {
 
 	T findById(ID l);
 
+	TCommand findCommandById(ID l);
+
 	TCommand save(TCommand tCommand);
 }
