@@ -3,6 +3,7 @@ version: 2.1
 # Use a package of configuration called an orb.
 orbs:
   maven: circleci/maven@0.0.12
+  heroku: circleci/heroku@0.0.10. # Invoke the Heroku orb
 
 executors:
   my_executor:
@@ -23,3 +24,9 @@ workflows:
     jobs:
       - maven/test: # checkout, build, test, and upload test results
           executor: my_executor
+      - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
+          requires:
+            - maven/test
+#          filters:
+#            branches:
+#              only: sequential-branch-filter
