@@ -3,7 +3,7 @@ version: 2.1
 # Use a package of configuration called an orb.
 orbs:
   maven: circleci/maven@0.0.12
-  heroku: circleci/heroku@0.0.10. # Invoke the Heroku orb
+  heroku: circleci/heroku@1.2.2 # Invoke the Heroku orb
 
 executors:
   my_executor:
