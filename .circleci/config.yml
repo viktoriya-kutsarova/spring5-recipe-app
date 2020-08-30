@@ -3,8 +3,15 @@ version: 2.1
 # Use a package of configuration called an orb.
 orbs:
   maven: circleci/maven@0.0.12
+jobs:
+  build:
+    docker:
+      - image: cimg/openjdk:14.0
+    steps:
+      - run: java --version
 
 workflows:
   maven_test:
     jobs:
+      - build
       - maven/test # checkout, build, test, and upload test results
