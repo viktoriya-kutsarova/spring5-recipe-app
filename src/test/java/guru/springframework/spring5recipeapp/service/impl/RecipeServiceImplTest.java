@@ -97,4 +97,19 @@ class RecipeServiceImplTest {
 		assertNotNull(savedRecipe);
 		assertEquals(1l, savedRecipe.getId());
 	}
+
+	@Test
+	void deleteRecipe() {
+
+		//given
+		Long recipeId = 2L;
+
+		//when
+		recipeService.deleteById(recipeId);
+
+		// no need for when, as the method has void return type
+
+		//then
+		verify(recipeRepository, times(1)).deleteById(recipeId);
+	}
 }

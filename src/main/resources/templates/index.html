@@ -37,6 +37,7 @@
                             <th scope="col">Description</th>
                             <th>View</th>
                             <th>Update</th>
+                            <th>Delete</th>
                         </tr>
                         </thead>
 
@@ -45,21 +46,29 @@
                             <td>19</td>
                             <td>Item 19</td>
                             <td><a href="#">View</a></td>
+                            <td><a href="#">Update</a></td>
+                            <td><a href="#">Delete</a></td>
                         </tr>
                         <tr th:remove="all">
                             <td>212</td>
                             <td>Item 212</td>
                             <td><a href="#">View</a></td>
+                            <td><a href="#">Update</a></td>
+                            <td><a href="#">Delete</a></td>
                         </tr>
                         <tr th:remove="all">
                             <td>3342</td>
                             <td>Item 3342</td>
                             <td><a href="#">View</a></td>
+                            <td><a href="#">Update</a></td>
+                            <td><a href="#">Delete</a></td>
                         </tr>
                         <tr th:remove="all">
                             <td>4421</td>
                             <td>Item 4421</td>
+                            <td><a href="#">View</a></td>
                             <td><a href="#">Update</a></td>
+                            <td><a href="#">Delete</a></td>
                         </tr>
                         <tr th:each="recipe : ${recipes}">
                             <td th:text="${recipe.id}">3342</td>
@@ -68,6 +77,8 @@
                                 View</a></td>
                             <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/update'}">
                                 Update</a></td>
+                            <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/delete'}">
+                                Delete</a></td>
                         </tr>
                         </tbody>
 

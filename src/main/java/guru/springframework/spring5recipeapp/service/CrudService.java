@@ -16,4 +16,6 @@ public interface CrudService<T, TCommand, ID> {
 	TCommand findCommandById(ID l);
 
 	TCommand save(TCommand tCommand);
+
+	void deleteById(ID l);
 }
