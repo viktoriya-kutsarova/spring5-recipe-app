@@ -29,15 +29,15 @@ public class Ingredient {
 	private String description;
 	private BigDecimal amount;
 	@OneToOne(fetch = FetchType.EAGER)
-	private UnitOfMeasure unit;
+	private UnitOfMeasure unitOfMeasure;
 
 	public Ingredient() {
 	}
 
-	public Ingredient(BigDecimal amount, UnitOfMeasure unit, String description) {
+	public Ingredient(BigDecimal amount, UnitOfMeasure unitOfMeasure, String description) {
 		this.description = description;
 		this.amount = amount;
-		this.unit = unit;
+		this.unitOfMeasure = unitOfMeasure;
 		this.recipe = recipe;
 	}
 

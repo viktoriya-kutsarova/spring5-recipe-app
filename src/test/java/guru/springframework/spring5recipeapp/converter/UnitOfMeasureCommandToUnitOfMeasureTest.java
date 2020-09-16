@@ -33,7 +33,7 @@ class UnitOfMeasureCommandToUnitOfMeasureTest {
 	void convert() throws Exception {
 		//given
 		UnitOfMeasureCommand unitOfMeasureCommand = new UnitOfMeasureCommand();
-		unitOfMeasureCommand.setDescription(DESCRIPTION);
+		unitOfMeasureCommand.setUom(DESCRIPTION);
 		unitOfMeasureCommand.setId(LONG_VALUE);
 
 		//when

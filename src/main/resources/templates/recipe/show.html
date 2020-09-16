@@ -26,8 +26,8 @@
 <!--            <div class="card-deck">-->
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title" th:text="${recipe.description}">Recipe
-                            Description Here!
+                        <div class="card-title" th:text="${recipe.description}">
+                            <h3>Recipe Description Here!</h3>
                         </div>
                     </div>
                     <div class="card-body">
@@ -89,14 +89,19 @@
                 </div>
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title">Ingredients</div>
+                        <div class="card-title col-md-5">
+                            <h3>Ingredients</h3>
+                        </div>
+                        <div class="col-md-1">
+                            <a class="btn btn-primary" href="#" th:href="@{'/recipe/' + ${recipe.id} + '/ingredients'}" role="button">View</a>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
                                 <ul th:each="ingredient : ${recipe.ingredients}">
                                     <li th:text="${ingredient.amount != null ? ingredient.amount : ''}
-                                        + ' ' + ${ingredient.unit != null ? ingredient.unit.uom : ''}
+                                        + ' ' + ${ingredient.unitOfMeasure != null ? ingredient.unitOfMeasure.uom : ''}
                                         + ' ' + ${ingredient.description}">1 Cup of milk</li>
                                     <li th:remove="all">1 Teaspoon of chocolate</li>
                                     <li th:remove="all">1 Teaspoon of Sugar</li>

@@ -1,9 +1,7 @@
 package guru.springframework.spring5recipeapp.converter;
 
 import guru.springframework.spring5recipeapp.command.IngredientCommand;
-import guru.springframework.spring5recipeapp.command.RecipeCommand;
 import guru.springframework.spring5recipeapp.domain.Ingredient;
-import guru.springframework.spring5recipeapp.domain.Recipe;
 import lombok.Synchronized;
 
 import org.springframework.core.convert.converter.Converter;
@@ -16,6 +14,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class IngredientsCommandToIngredients implements Converter<IngredientCommand, Ingredient> {
 
+	private final UnitOfMeasureCommandToUnitOfMeasure unitOfMeasureCommandToUnitOfMeasure;
+
+	public IngredientsCommandToIngredients(UnitOfMeasureCommandToUnitOfMeasure unitOfMeasureCommandToUnitOfMeasure) {
+		this.unitOfMeasureCommandToUnitOfMeasure = unitOfMeasureCommandToUnitOfMeasure;
+	}
+
 	@Synchronized
 	@Nullable
 	@Override
@@ -27,6 +31,10 @@ public class IngredientsCommandToIngredients implements Converter<IngredientComm
 		ingredient.setId(ingredientCommand.getId());
 		ingredient.setAmount(ingredientCommand.getAmount());
 		ingredient.setDescription(ingredientCommand.getDescription());
+
+		if (ingredientCommand.getUnitOfMeasure() != null) {
+			ingredient.setUnitOfMeasure(unitOfMeasureCommandToUnitOfMeasure.convert(ingredientCommand.getUnitOfMeasure()));
+		}
 
 		return ingredient;
 	}

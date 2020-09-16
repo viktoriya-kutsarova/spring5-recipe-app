@@ -235,7 +235,7 @@ public class RecipeLoader implements ApplicationListener<ContextRefreshedEvent> 
 		spicyGrilledChicken.addIngredient(new Ingredient(BigDecimal.valueOf(4), "radishes, thinly sliced"));
 		spicyGrilledChicken.addIngredient(new Ingredient(BigDecimal.valueOf(0.5), pint, "cherry tomatoes, halved"));
 		spicyGrilledChicken.addIngredient(new Ingredient(BigDecimal.valueOf(0.25), "red onion, thinly sliced"));
-		spicyGrilledChicken.addIngredient(new Ingredient("Roughly chopped cilantro"));
+		spicyGrilledChicken.addIngredient(new Ingredient(BigDecimal.ONE, "Roughly chopped cilantro"));
 		spicyGrilledChicken.addIngredient(new Ingredient(BigDecimal.valueOf(0.5), cup, "sour cream thinned with 1/4 cup milk"));
 		spicyGrilledChicken.addIngredient(new Ingredient(BigDecimal.ONE, "lime, cut into wedges"));
 
