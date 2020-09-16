@@ -31,6 +31,10 @@ public class IngredientsToIngredientsCommand  implements Converter<Ingredient, I
 		ingredientCommand.setId(ingredient.getId());
 		ingredientCommand.setAmount(ingredient.getAmount());
 		ingredientCommand.setDescription(ingredient.getDescription());
+		if (ingredient.getRecipe() != null) {
+			ingredientCommand.setRecipeId(ingredient.getRecipe().getId());
+		}
+
 
 		if (ingredient.getUnitOfMeasure() != null) {
 			ingredientCommand.setUnitOfMeasure(unitOfMeasureToUnitOfMeasureCommand.convert(ingredient.getUnitOfMeasure()));

@@ -1,6 +1,7 @@
 package guru.springframework.spring5recipeapp.controller;
 
 import guru.springframework.spring5recipeapp.command.RecipeCommand;
+import guru.springframework.spring5recipeapp.service.IngredientService;
 import guru.springframework.spring5recipeapp.service.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,9 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IngredientController {
 
 	private final RecipeService recipeService;
+	private final IngredientService ingredientService;
 
-	public IngredientController(RecipeService recipeService) {
+	public IngredientController(RecipeService recipeService, IngredientService ingredientService) {
 		this.recipeService = recipeService;
+		this.ingredientService = ingredientService;
 	}
 
 	@RequestMapping("/recipe/{id}/ingredients")
@@ -30,4 +33,16 @@ public class IngredientController {
 
 		return "recipe/ingredient/list";
 	}
+
+	@RequestMapping("/recipe/{recipeId}/ingredients/{ingredientId}")
+	public String showIngredient(@PathVariable String recipeId, @PathVariable String ingredientId, Model model) {
+		log.debug("Getting recipe id for ingredient controller");
+
+		model.addAttribute("ingredient",
+				ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(ingredientId)));
+
+		return "recipe/ingredient/show";
+	}
+
+
 }
