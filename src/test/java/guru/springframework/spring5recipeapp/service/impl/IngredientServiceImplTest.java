@@ -12,10 +12,8 @@ import guru.springframework.spring5recipeapp.domain.Recipe;
 import guru.springframework.spring5recipeapp.respository.IngredientRepository;
 import guru.springframework.spring5recipeapp.respository.RecipeRepository;
 import guru.springframework.spring5recipeapp.respository.UnitOfMeasureRepository;
-import guru.springframework.spring5recipeapp.service.IngredientService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -105,12 +103,31 @@ public class IngredientServiceImplTest {
 		when(recipeRepository.save(any())).thenReturn(recipeSaved);
 
 		//when
-		IngredientCommand savedIngredient = ingredientService.save(ingredientCommand);
+		IngredientCommand savedIngredient = ingredientService.saveIngredientCommand(ingredientCommand);
 
 		//then
 		assertEquals(2L, savedIngredient.getId());
 		verify(recipeRepository, times(1)).save(any(Recipe.class));
 		verify(recipeRepository, times(1)).findById(anyLong());
+	}
+
+	@Test
+	public void testDeleteIngredientById() {
+		Ingredient ingredient = new Ingredient();
+		ingredient.setId(3L);
+		Recipe recipe = new Recipe();
+		recipe.setId(1L);
+		recipe.addIngredient(ingredient);
+		ingredient.setRecipe(recipe);
+		Optional<Recipe> recipeOptional = Optional.of(recipe);
+
+		//when
+		when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+		ingredientService.deleteById(1L, 3L);
+
+		verify(recipeRepository, times(1)).findById(anyLong());
+		verify(recipeRepository, times(1)).save(any());
 	}
 
 }

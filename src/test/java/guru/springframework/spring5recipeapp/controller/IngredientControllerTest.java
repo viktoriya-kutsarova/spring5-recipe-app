@@ -7,8 +7,6 @@ import guru.springframework.spring5recipeapp.command.RecipeCommand;
 import guru.springframework.spring5recipeapp.service.IngredientService;
 import guru.springframework.spring5recipeapp.service.RecipeService;
 import guru.springframework.spring5recipeapp.service.UnitOfMeasureService;
-import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -16,7 +14,6 @@ import org.mockito.MockitoAnnotations;
 
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -24,6 +21,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -102,12 +100,12 @@ public class IngredientControllerTest {
 		IngredientCommand ingredientCommand = new IngredientCommand();
 		ingredientCommand.setId(2L);
 		ingredientCommand.setRecipeId(3L);
-		when(ingredientService.save(any())).thenReturn(ingredientCommand);
+		when(ingredientService.saveIngredientCommand(any())).thenReturn(ingredientCommand);
 
 		mockMvc.perform(post("/recipe/1/ingredient")
-			.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-			.param("id", "2")
-			.param("description", "Test description"))
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.param("id", "2")
+				.param("description", "Test description"))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/recipe/3/ingredient/2"));
 	}
@@ -130,5 +128,13 @@ public class IngredientControllerTest {
 				.andExpect(model().attributeExists("uomList"));
 
 		verify(recipeService, times(1)).findCommandById(anyLong());
+	}
+
+	@Test
+	public void deleteIngredientTest() throws Exception {
+		mockMvc.perform(get("/recipe/2/ingredients/1/delete"))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/recipe/2/ingredients"));
+		verify(ingredientService, times(1)).deleteById(anyLong(), anyLong());
 	}
 }

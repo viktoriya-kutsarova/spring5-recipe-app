@@ -1,7 +1,6 @@
 package guru.springframework.spring5recipeapp.service.impl;
 
 import java.util.Optional;
-import java.util.Set;
 
 import guru.springframework.spring5recipeapp.command.IngredientCommand;
 import guru.springframework.spring5recipeapp.converter.IngredientsCommandToIngredients;
@@ -43,24 +42,9 @@ public class IngredientServiceImpl implements IngredientService {
 	}
 
 	@Override
-	public Set<Ingredient> getAll() {
-		return null;
-	}
-
-	@Override
-	public Ingredient findById(Long l) {
-		return null;
-	}
-
-	@Override
-	public IngredientCommand findCommandById(Long l) {
-		return null;
-	}
-
-	@Override
 	@Transactional
 	// save or update
-	public IngredientCommand save(IngredientCommand ingredientCommand) {
+	public IngredientCommand saveIngredientCommand(IngredientCommand ingredientCommand) {
 		if (ingredientCommand == null) {
 			return null;
 		}
@@ -96,7 +80,7 @@ public class IngredientServiceImpl implements IngredientService {
 				.filter(recipeIngredient -> recipeIngredient.getId().equals(ingredientCommand.getId()))
 				.findFirst();
 
-		if(!savedIngredientOptional.isPresent()) {
+		if (!savedIngredientOptional.isPresent()) {
 			savedIngredientOptional = savedRecipe.getIngredients().stream()
 					.filter(ri -> ri.getDescription().equals(ingredientCommand.getDescription()))
 					.filter(ri -> ri.getAmount().equals(ingredientCommand.getAmount()))
@@ -105,11 +89,6 @@ public class IngredientServiceImpl implements IngredientService {
 		}
 		//TODO check for fail
 		return ingredientsToIngredientsCommand.convert(savedIngredientOptional.get());
-	}
-
-	@Override
-	public void deleteById(Long l) {
-
 	}
 
 	@Override
@@ -131,5 +110,31 @@ public class IngredientServiceImpl implements IngredientService {
 		}
 
 		return ingredientCommandOptional.get();
+	}
+
+	@Override
+	public void deleteById(Long recipeId, Long idToDelete) {
+		log.debug("Deleting ingredient " + recipeId + ":" + idToDelete);
+
+		Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
+
+		if (recipeOptional.isPresent()) {
+			Recipe recipe = recipeOptional.get();
+			log.debug("found recipe");
+
+			Optional<Ingredient> ingredientOptional = recipe.getIngredients().stream()
+					.filter(i -> i.getId().equals(idToDelete)).findFirst();
+
+			if (ingredientOptional.isPresent()) {
+				log.debug("found ingredient");
+				Ingredient ingredientToDelete = ingredientOptional.get();
+				ingredientToDelete.setRecipe(null);
+				recipe.getIngredients().remove(ingredientToDelete);
+				recipeRepository.save(recipe);
+			}
+		}
+		else {
+			log.debug("Recipe id not found. Id: " + recipeId);
+		}
 	}
 }
