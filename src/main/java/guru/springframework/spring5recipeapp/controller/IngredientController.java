@@ -10,12 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * Created by Viktoriya on 13-Sep-20
@@ -36,8 +34,7 @@ public class IngredientController {
 		this.unitOfMeasureService = unitOfMeasureService;
 	}
 
-	@RequestMapping("/recipe/{id}/ingredients")
-	@GetMapping
+	@GetMapping("/recipe/{id}/ingredients")
 	public String getIngredients(@PathVariable String id, Model model) {
 		log.debug("Getting recipe id for ingredient controller");
 
@@ -46,8 +43,7 @@ public class IngredientController {
 		return "recipe/ingredient/list";
 	}
 
-	@RequestMapping("/recipe/{recipeId}/ingredient/{ingredientId}")
-	@GetMapping
+	@GetMapping("/recipe/{recipeId}/ingredient/{ingredientId}")
 	public String showIngredient(@PathVariable String recipeId, @PathVariable String ingredientId, Model model) {
 		log.debug("Getting recipe id for ingredient controller");
 
@@ -57,8 +53,7 @@ public class IngredientController {
 		return "recipe/ingredient/show";
 	}
 
-	@GetMapping
-	@RequestMapping("/recipe/{recipeId}/ingredient/{ingredientId}/update")
+	@GetMapping("/recipe/{recipeId}/ingredient/{ingredientId}/update")
 	public String updateRecipeIngredient(@PathVariable String recipeId, @PathVariable String ingredientId, Model model) {
 
 		model.addAttribute("ingredient",
@@ -68,8 +63,7 @@ public class IngredientController {
 		return "recipe/ingredient/ingredientform";
 	}
 
-	@PostMapping
-	@RequestMapping("/recipe/{recipeId}/ingredient")
+	@PostMapping("/recipe/{recipeId}/ingredient")
 	public String saveIngredient(@ModelAttribute IngredientCommand ingredientCommand) {
 		IngredientCommand savedIngredient = ingredientService.saveIngredientCommand(ingredientCommand);
 
@@ -92,7 +86,7 @@ public class IngredientController {
 		return "recipe/ingredient/ingredientform";
 	}
 
-	@RequestMapping("/recipe/{recipeId}/ingredients/{ingredientId}/delete")
+	@GetMapping("/recipe/{recipeId}/ingredients/{ingredientId}/delete")
 	public String deleteIngredient(@PathVariable Long recipeId, @PathVariable Long ingredientId) {
 		ingredientService.deleteById(recipeId, ingredientId);
 
