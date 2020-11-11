@@ -1,7 +1,15 @@
 package guru.springframework.spring5recipeapp.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.servlet.http.HttpServletResponse;
+
+import guru.springframework.spring5recipeapp.command.RecipeCommand;
 import guru.springframework.spring5recipeapp.service.ImageService;
 import guru.springframework.spring5recipeapp.service.RecipeService;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,6 +45,23 @@ public class ImageController {
 
 		imageService.saveImageFile(id, file);
 		return "redirect:/recipe/" + id;
+	}
+
+	@GetMapping("recipe/{id}/recipeimage")
+	public void renderImageFromDB(@PathVariable Long id, HttpServletResponse response) throws IOException {
+		RecipeCommand recipeCommand = recipeService.findCommandById(id);
+
+		if (recipeCommand.getImage() != null) {
+			Byte[] byteArray = recipeCommand.getImage();
+			byte[] bytes = new byte[byteArray.length];
+			int i = 0;
+			for (Byte b : byteArray) {
+				bytes[i++] = b;
+			}
+			response.setContentType("image/jpeg");
+			InputStream is = new ByteArrayInputStream(bytes);
+			IOUtils.copy(is, response.getOutputStream());
+		}
 	}
 
 }
