@@ -88,7 +88,7 @@ class RecipeControllerTest {
 
 		when(recipeService.findCommandById(any())).thenReturn(command);
 
-		mockMvc.perform(put("/recipe/1/update"))
+		mockMvc.perform(get("/recipe/1/update"))
 				.andExpect(status().isOk())
 				.andExpect(view().name("recipe/recipeform"))
 				.andExpect(model().attributeExists("recipe"));
