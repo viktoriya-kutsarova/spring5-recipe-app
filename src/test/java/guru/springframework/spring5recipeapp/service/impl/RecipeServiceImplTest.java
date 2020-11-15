@@ -8,6 +8,7 @@ import guru.springframework.spring5recipeapp.command.RecipeCommand;
 import guru.springframework.spring5recipeapp.converter.RecipeCommandToRecipe;
 import guru.springframework.spring5recipeapp.converter.RecipeToRecipeCommand;
 import guru.springframework.spring5recipeapp.domain.Recipe;
+import guru.springframework.spring5recipeapp.exceptions.NotFoundException;
 import guru.springframework.spring5recipeapp.respository.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,6 +57,16 @@ class RecipeServiceImplTest {
 		verify(recipeRepository, times(1)).findById(anyLong());
 		verify(recipeRepository, never()).findAll();
 
+	}
+
+	@Test
+	public void getRecipeByIdNotFound() {
+		Optional<Recipe> recipeOptional = Optional.empty();
+		when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+		assertThrows(NotFoundException.class, () -> {
+			Recipe returnedRecipe = recipeService.findById(1L);
+		});
 	}
 
 	@Test
